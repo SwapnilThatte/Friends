@@ -34,7 +34,7 @@ export const Login = () => {
   return (
       <div className="login">
           <div className="login-logo">
-              <div className="login-logo-text">CLUB</div>
+              <div className="login-logo-text">FRIENDS</div>
               <div className="login-logo-subtitle">Where the world meets!</div>
           </div>
           <form className="login-form-container">
