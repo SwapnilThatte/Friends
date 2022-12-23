@@ -1,0 +1,86 @@
+.login {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+}
+
+.login-logo {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 1rem;
+}
+
+.login-logo-text {
+    color: var(--color-blue);
+    font-size: 6rem;
+}
+
+.login-logo-subtitle {
+    font-size: 1.4rem;
+    color: var(--color-dark);
+}
+
+.login-form-container {
+    background-color: rgb(250, 250, 250);
+    padding: 2rem 4rem;
+    width: 36%;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 1rem;
+    gap: 1rem;
+    box-shadow: 0 0 28px 4px rgba(128, 128, 128, 0.322);
+}
+
+.login-form-title {
+    font-size: 2.6rem;
+    font-weight: 600;
+    color: rgb(85, 85, 85);
+}
+
+.login-form-input-group {
+    display: flex;
+    gap: 0.2rem;
+    width: 100%;
+    flex-direction: column;
+}
+
+.login-form-label {
+    font-size: 1.2rem;
+}
+
+.login-form-input {
+    font-size: 1.1rem;
+    padding: 5px 10px;
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.877);
+    border: 1px solid rgb(187, 187, 187);
+    border-radius: 10px;
+}
+
+.login-form-input:focus {
+    border: 1px solid rgb(61, 61, 61);
+}
+
+.login-form-submit-btn {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    padding: 0.6rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 400;
+    background-color: #286fda;
+    color: white;
+    cursor: pointer;
+}
+
+.login-form-submit-btn:hover {
+background-color: #062c64;
+}
