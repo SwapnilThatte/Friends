@@ -32,7 +32,7 @@ export const Register = () => {
   return (
       <div className="register">
           <div className="register-logo">
-              <div className="register-logo-text">CLUB</div>
+              <div className="register-logo-text">FRIENDS</div>
               <div className="register-logo-subtitle">
                   Where the world meets!
               </div>
