@@ -63,6 +63,7 @@
 .post-like {
     margin-left: 2rem;
     padding: 1rem 0.5rem;
+    cursor: pointer;
     /* fill: red; */
 }
 
@@ -76,4 +77,9 @@
 
 .post-desc-info {
     color: rgb(63, 63, 63);
+}
+
+.color-class {
+    font-weight: 900;
+    color: red;
 }
