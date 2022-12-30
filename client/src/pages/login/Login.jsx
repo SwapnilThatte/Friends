@@ -21,7 +21,11 @@ export const Login = () => {
                 payload
             );
             console.log(response)
+            localStorage.setItem("userid" , response.data.user._id)
             document.cookie = "auth-token="+response.data.authorization 
+        //    setTimeout(() => {
+            window.location = "home";
+        //    }, 99999);
             
         }
         catch(err) {
