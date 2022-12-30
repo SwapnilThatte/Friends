@@ -1,0 +1,9 @@
+.profile-posts {
+    border-radius: 10px;
+        cursor: pointer;
+        width: 16rem;
+            height: 16rem;
+}
+.profile-posts:hover {
+    transform: scale(1.4, 1.4);
+}
