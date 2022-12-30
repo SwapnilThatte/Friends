@@ -1,6 +1,5 @@
 import axios from "axios";
-import React from "react";
-// import { useEffect } from "react";
+import React, { useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Navbar } from "../../components/navbar/Navbar";
@@ -11,11 +10,8 @@ import "./profile.css";
 export const Profile = () => {
 
     const [profile, setProfile] = useState({})
-    const [profileposts, setProfilePosts] = useState([])
-    const [profileId, setProfileIds] = useState({})
-
-    let keys = undefined
-    let posts_obj_arr = [];
+    const [posts, setPosts] = useState([])
+let posts_arr = [];
 
 
     useEffect(() => {
@@ -30,11 +26,7 @@ export const Profile = () => {
                             userid: userid,
                         }
                     );
-                    //  console.log(response.data.user);
-                    // console.log(response);
                     setProfile(response.data.user);
-                    // console.log(response);
-                    // return response;
                 }
             } catch (err) {
                 console.log(err);
@@ -44,64 +36,50 @@ export const Profile = () => {
         getProfile();
 
     }, []);
-    
-    useEffect(() => {
-        const getPosts = async () => {
-            // getposts
-            try {
-                const cookie = getUser();
-                const userid = localStorage.getItem("userid");
-                if (cookie !== undefined) {
-                    const response = await axios.post(
-                        "http://localhost:5000/post/getposts",
-                        {
-                            userid: userid,
-                        }
-                    );
 
-                    // Gets keys form the response.data.posts object which is actual post
-                    keys = Object.keys(response.data.posts);
-                    console.log(`KEYS =====> ${keys}`);
-                    // Access perticular post using each key from keys array
-                    let temp_arr = []
-                    keys.forEach((ele) => {
-                         temp_arr.push(response.data.posts[ele]);
-                    })
-
-
-                    console.log(temp_arr);
-                    /*
-                    Algorithm:
-                                            
-                    
-                    */
-                    setProfileIds([...new Set(temp_arr.map((ele) => ele._id))]);
-                    
-                    // const id_Arr = [...new Set(temp_arr.map((ele) => ele._id))];
-                    // let id_obj = {}
-                    // keys.forEach((ele) => {
-                        
-                    //     // if (false) {
-                    //         console.log(response.data.posts[ele]._id);
-                    //         if (
-                    //             id_Arr.includes(response.data.posts[ele]._id) &&
-                    //             !Object.keys(id_obj).includes(
-                    //                 response.data.posts[ele]._id
-                    //             )
-                    //         ) {
-                    //             id_obj[response.data.posts[ele]._id] = 1
-                    //             posts_obj_arr.push(response.data.posts[ele]);
-                    //         }
-                    //     // }
-                    // });
-                    setProfilePosts(posts_obj_arr);
+    const getPosts = async () => {
+        // getposts
+        try {
+            const cookie = getUser();
+            const userid = localStorage.getItem("userid");
+            if (cookie !== undefined) {
+                const response = await axios.post(
+                    "http://localhost:5000/post/getposts",
+                    {
+                        userid: userid,
+                    }
+                );
+ 
+                for(let i=0; i<response.data.posts.length; i++) {
+                   
+                    posts_arr.push(response.data.posts[i]);
                 }
-            } catch (err) {
-                console.log(err);
+
+                let mymap = new Map();
+
+               let unique = posts_arr.filter((el) => {
+                    const val = mymap.get(el._id);
+                    if (val) {
+                        if (el.id < val) {
+                            mymap.delete(el._id);
+                            mymap.set(el._id, el.title);
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    mymap.set(el._id, el.title);
+                    return true;
+                });
+                setPosts(unique)
             }
-        };
-        getPosts()
-    },[])
+        } 
+        catch (err) {
+            console.log(err);
+        }
+    };
+    
+ useEffect(() => {getPosts()}, []);
 
     return (
         <>
@@ -150,7 +128,8 @@ export const Profile = () => {
                         <div className="posts-grid">
                             {
                                 
-                                profileposts.map((ele) =>(
+                                [...new Set(posts.map(ele => ({id : ele._id, imageurl : ele.imageurl, owner : ele.owner, likes : ele.likes, title : ele.title, updatedAt : ele.updatedAt})))].map((ele) =>(
+
                                     <Profilepost key={ele._id} post={ele}/>
                                 ))
                             }
