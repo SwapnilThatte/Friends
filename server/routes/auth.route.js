@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs')
 router.post('/register', async (req, res) => {
     // Make sure that the request.body is not empty
     if (req.body === null || req.body === undefined) {
-        return res.json({msg : "Invalid User Credentials"})
+        return res.status(400).json({msg : "Invalid User Credentials"})
     }
     else {
         // Extract information from Body
@@ -18,7 +18,10 @@ router.post('/register', async (req, res) => {
         // Check if the user already exists in the database
         const isExisting = await User.findOne({email : email})
         if (isExisting !== null) {
-            return res.json({msg : "User already Existes"}).status(400)
+            return res
+                .status(400)
+                .json({ msg: "User already Existes" })
+                .status(400);
         }
         else {
             try {
@@ -33,7 +36,7 @@ router.post('/register', async (req, res) => {
             }
             catch(err) {
                 // Return an error as response if any error occours in the registration process
-                return res.json({error : err})
+                return res.status(400).json({ error: err });
             }
         }
     }

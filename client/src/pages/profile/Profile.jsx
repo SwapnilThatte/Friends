@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Link } from "react-router-dom";
 import React, { useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -119,6 +120,8 @@ let posts_arr = [];
                                         Following
                                     </div>
                                 </div>
+
+                                <Link to="../update" relative="path">Update Profile</Link>
                             </div>
                         </div>
                     </div>

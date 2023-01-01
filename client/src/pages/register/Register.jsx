@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 import './register.css'
@@ -10,8 +11,10 @@ export const Register = () => {
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const location = useLocation()
 
     const handleSubmit = async event => {
+
         event.preventDefault()
         const payload = {
             name : username,
@@ -21,6 +24,14 @@ export const Register = () => {
         try {
             const response = await axios.post("http://localhost:5000/auth/register", payload)
             console.log(response)
+            if (response.status === 200) {
+                window.location = "home"
+            }
+            else {
+                console.log("BAD REQ");
+            }
+
+            // location.redirect("home")
         }
         catch(err) {
             console.log(err)
