@@ -50,10 +50,11 @@ router.post('/followingme', async (req, res) => {
             const { userid } = req.body;
             try {
                 const user = await User.findById(userid);
+                console.log(user);
                 if (user) {
                     return res.json({
                         msg: "Friends Found",
-                        friends: user.friends,
+                        friends: user.following,
                     });
                 } else {
                     return res.json({ msg: "User does not exists" });
@@ -80,7 +81,7 @@ router.post('/followingme', async (req, res) => {
 
 // Get all user followed by user
 // @Required => userid
-router.post('followedbyme', async (req, res) => {
+router.post('/followedbyme', async (req, res) => {
      // Authenticate user 
     if (authenticate(req)) {
         // Check whether the request body is empty or not
@@ -177,6 +178,41 @@ router.post('/follow', async (req, res) => {
     } 
     else {
         res.json({ msg: "Invalid User" });
+    }
+})
+
+
+
+// Update profile 
+// @Required {userid}
+router.post('/updateprofile', async(req, res) => {
+ // Authenticate user 
+    if (authenticate(req)) {
+        // Check whether the request body is empty or not
+        if (req.body !== null || req.body !== undefined) {
+            try {
+                try {
+                    const {userid, name, profilePhotoURL} = req.body
+                    const user = await User.findByIdAndUpdate(
+                        userid.toString(),
+                        {
+                            name: name,
+                            profilePhotoURL: profilePhotoURL,
+                        }
+                    );  
+                    
+                    return res.status(200).json({msg : "User Updated Succesfully", user : user})    
+                } catch (error) {
+                    
+                }
+            }
+            catch(err) {
+
+            }
+        }
+    }
+    else {
+        return res.status(401).json({msg : "Unauthorized user to make changes"})
     }
 })
 

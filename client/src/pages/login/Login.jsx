@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-
+import {Link} from 'react-router-dom'
 import './login.css'
 
 
@@ -74,9 +74,9 @@ export const Login = () => {
               >
                   Login
               </button>
-              <a href="#" className="login-to-register-link">
+              <Link to="register" className="login-to-register-link">
                   Don't have an account? Create One!
-              </a>
+              </Link>
           </form>
       </div>
   );

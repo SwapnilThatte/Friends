@@ -11,7 +11,7 @@ export const Post = ({post}) => {
         // event.preventDefault()
         console.log("Like Event ", likeEvntCntr);
         try {
-            // const response = await axios.put("http://localhost:5000/post/like", {postid : post.ids})
+            const response = await axios.put("http://localhost:5000/post/like", {postid : post.ids})
             console.log(response);
             if (likeEvntCntr === 1) {
                 document.getElementById("like_btn").classList.add('color-class')
