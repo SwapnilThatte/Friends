@@ -74,7 +74,7 @@ export const Login = () => {
               >
                   Login
               </button>
-              <Link to="register" className="login-to-register-link">
+              <Link to="../register" relative='path' className="login-to-register-link">
                   Don't have an account? Create One!
               </Link>
           </form>

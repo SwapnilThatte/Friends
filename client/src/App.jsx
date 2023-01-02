@@ -26,6 +26,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path='/'>
+        <Route path='login' element={<Login/>}/>
         <Route index element={isAuthenticated()?<Home/>:<Login/>}/>
         <Route path='profile' element={!isAuthenticated()?<Login/>:<Profile/>}/>
         <Route path='home' element={!isAuthenticated()?<Login/>:<Home/>}/>

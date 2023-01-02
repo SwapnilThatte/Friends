@@ -33,7 +33,7 @@ let posts_arr = [];
                 console.log(err);
             }
         };
-
+        console.log(profile);
         getProfile();
 
     }, []);
@@ -89,7 +89,7 @@ let posts_arr = [];
                 <div className="profile">
                     <div className="profile-intro">
                         <img
-                            src="https://source.unsplash.com/1600x900/?boy"
+                            src={profile.profilePhotoURL}
                             alt=""
                             className="profile-img"
                         />
@@ -121,7 +121,9 @@ let posts_arr = [];
                                     </div>
                                 </div>
 
-                                <Link to="../update" relative="path">Update Profile</Link>
+                                <Link to="../update" relative="path">
+                                    Update Profile
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -129,13 +131,20 @@ let posts_arr = [];
                     <div className="all-posts">
                         <div className="posts-title">My Posts</div>
                         <div className="posts-grid">
-                            {
-                                
-                                [...new Set(posts.map(ele => ({id : ele._id, imageurl : ele.imageurl, owner : ele.owner, likes : ele.likes, title : ele.title, updatedAt : ele.updatedAt})))].map((ele) =>(
-
-                                    <Profilepost key={ele._id} post={ele}/>
-                                ))
-                            }
+                            {[
+                                ...new Set(
+                                    posts.map((ele) => ({
+                                        id: ele._id,
+                                        imageurl: ele.imageurl,
+                                        owner: ele.owner,
+                                        likes: ele.likes,
+                                        title: ele.title,
+                                        updatedAt: ele.updatedAt,
+                                    }))
+                                ),
+                            ].map((ele) => (
+                                <Profilepost key={ele._id} post={ele} />
+                            ))}
                         </div>
                     </div>
                 </div>

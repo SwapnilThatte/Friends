@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 
 import './register.css'
@@ -90,9 +91,9 @@ export const Register = () => {
               <button className="register-form-submit-btn" onClick={event => handleSubmit(event)}>
                   Create an Account
               </button>
-              <a href="#" className="register-to-login-link">
+              <Link to="../login" relative="path" className="register-to-login-link">
                   Already have an account? Login!
-              </a>
+              </Link>
           </form>
       </div>
   );
