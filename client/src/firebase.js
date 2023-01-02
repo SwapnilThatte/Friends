@@ -2,16 +2,20 @@
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+import {FIREBASE} from "../FIREBASE_SECRETS"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCdSCGpCrMsEPbIyhXqqhzS1-bx10K3pZg",
-    authDomain: "social-media-app-3840f.firebaseapp.com",
-    projectId: "social-media-app-3840f",
-    storageBucket: "social-media-app-3840f.appspot.com",
-    messagingSenderId: "904009357841",
-    appId: "1:904009357841:web:3cd3546d99a394edfb2fb0",
+    apiKey: FIREBASE.apiKey,
+    authDomain: FIREBASE.authDomain,
+    projectId: FIREBASE.projectId,
+    storageBucket: FIREBASE.storageBucket,
+    messagingSenderId: FIREBASE.messagingSenderId,
+    appId: FIREBASE.appId,
 };
+
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

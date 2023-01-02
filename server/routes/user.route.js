@@ -190,31 +190,43 @@ router.post('/updateprofile', async(req, res) => {
     if (authenticate(req)) {
         // Check whether the request body is empty or not
         if (req.body !== null || req.body !== undefined) {
-            try {
-                try {
-                    const {userid, name, profilePhotoURL} = req.body
-                    const user = await User.findByIdAndUpdate(
-                        userid.toString(),
-                        {
-                            name: name,
-                            profilePhotoURL: profilePhotoURL,
-                        }
-                    );  
-                    
-                    return res.status(200).json({msg : "User Updated Succesfully", user : user})    
-                } catch (error) {
-                    
-                }
+            // First Get user from userid
+            // Compare all updates with the existing user object
+            // change only those values which are updated in request body
+            const updates = {}
+            const {
+                userid,
+                email,
+                password,
+                profilePhotoURL,
+                followers,
+                followedByMe,
+            } = req.body;
+            const requiredUser = await User.findById(userid)
+            if (email !== requiredUser.email) {
+                updates["email"] = email
+                req.body.email = email
             }
-            catch(err) {
-
+            if (password !== requiredUser.password) {
+                updates["password"] = password
+                req.body.password = password
             }
+            if(profilePhotoURL !== requiredUser.profilePhotoURL) {
+                updates["profilePhotoURL"] = profilePhotoURL
+                req.body.profilePhotoURL = profilePhotoURL
+            }
+            return res.status(200).json({msg : "API IN DEVELOPEMENT", reqBody : updates})
+            
         }
     }
     else {
         return res.status(401).json({msg : "Unauthorized user to make changes"})
     }
 })
+
+
+
+
 
 
 

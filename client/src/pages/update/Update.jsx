@@ -15,21 +15,20 @@ export const Update = () => {
 
     /*
         # TODO
-            - Implement Axios request for updation of profile in mongodb
-            - Ensure the backend is handeling the request properly
-            -  Find out a way to delete the uploaded the file uploaded on google firebase storage
-    */
+
+
+
+        */
     
   const [image, setImage] = useState(undefined);
   const [title, setTitle] = useState("");
   const [downloadURL, setDownloadUrl] = useState("")
   const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
 
-  const uploadFile = (file) => {
+  const uploadFileProfilePhoto = (file) => {
       const storage = getStorage(app);
       const userid = localStorage.getItem("userid");
-      const fileName = userid + "__"+ new Date().getTime() +"__"+ title;
+      const fileName = "PROFILE__"+userid + "__"+ new Date().getTime() +"__"+ title;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -80,19 +79,21 @@ export const Update = () => {
 
             if (image) {
                 console.log("IMAGE => ", image);
-                uploadFile(image);
-
+                uploadFileProfilePhoto(image);
+                console.log("DownloadURL ----> ", downloadURL);
                 const payload = {
-                    title: title,
+                    userid : userid,
+                    name : profileRes.name,
                     profilePhotoURL: downloadURL,
-                    name: name,
-                    email: email,
+                    // name: profileRes.name,
                 };
+                // console.log(profileRes);
                 const response = await axios.post(
                     "http://localhost:5000/user/updateprofile",
                     payload
                 );
                 console.log(response);
+
             } else {
                 console.error("Choose an image first !");
             }
