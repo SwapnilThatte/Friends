@@ -8,6 +8,7 @@ import { Profile } from './pages/profile/Profile'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { isAuthenticated } from './cookieManager'
 import { Update } from './pages/update/Update'
+import { NewPost } from './pages/newPost/NewPost'
 // import dotenv from 'dotenv'
 
 
@@ -31,6 +32,7 @@ function App() {
         <Route path='profile' element={!isAuthenticated()?<Login/>:<Profile/>}/>
         <Route path='home' element={!isAuthenticated()?<Login/>:<Home/>}/>
         <Route path='update' element={!isAuthenticated()?<Login/>:<Update/>}/>
+        <Route path='newpost' element={!isAuthenticated()?<Login/>:<NewPost/>}/>
         <Route path='register' element={<Register/>}/>
       </Route>
     </Routes>

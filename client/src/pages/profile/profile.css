@@ -75,4 +75,41 @@
     flex-wrap: wrap;
 }
 
+.edit-logo {
+    color: black;
+    font-size: larger;
+}
 
+.update-link {
+    padding: 0 1rem;
+    color: black;
+    padding: 5px 1rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+}
+.update-link:hover {
+    background-color: rgba(169, 169, 169, 0.658);
+}
+
+.new-post {
+    /* font-size: larger; */
+    color: black;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.new-post:hover {
+    background-color: rgba(169, 169, 169, 0.658);
+    border-radius: 10px;
+}
+
+.new-post>span {
+    font-size: 2.1rem;
+}

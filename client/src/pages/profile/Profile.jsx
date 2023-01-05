@@ -106,23 +106,40 @@ let posts_arr = [];
                             <div className="follow-info">
                                 <div className="profile-followers">
                                     <div className="follower-number">
-                                        {profile.followers?.length}
+                                        {profile.friends?.length}
                                     </div>
                                     <div className="follower-title">
-                                        Followers
+                                        Friends
                                     </div>
                                 </div>
-                                <div className="profile-following">
-                                    <div className="following-number">
-                                        {profile.followedByMe?.length}
+                                <div className="profile-followers">
+                                    <div className="follower-number">
+                                        {posts?.length}
                                     </div>
-                                    <div className="following-title">
-                                        Following
-                                    </div>
+                                    <div className="follower-title">Posts</div>
                                 </div>
 
-                                <Link to="../update" relative="path">
-                                    Update Profile
+                                <Link
+                                    to="../update"
+                                    relative="path"
+                                    className="update-link"
+                                >
+                                    <span class="material-symbols-outlined edit-logo">
+                                        edit
+                                    </span>
+                                    {/* <br /> */}
+                                    Edit
+                                </Link>
+                                <Link
+                                    to="../newpost"
+                                    relative="path"
+                                    className="new-post"
+                                >
+                                    <span class="material-symbols-outlined ">
+                                        add
+                                    </span>
+                                    {/* <br /> */}
+                                    New Post
                                 </Link>
                             </div>
                         </div>
@@ -130,7 +147,9 @@ let posts_arr = [];
 
                     <div className="all-posts">
                         <div className="posts-title">My Posts</div>
+                        {/* <span class="material-symbols-outlined">add</span> */}
                         <div className="posts-grid">
+                            <div className="newPost"></div>
                             {[
                                 ...new Set(
                                     posts.map((ele) => ({
