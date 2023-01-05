@@ -18,12 +18,12 @@ const UserSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
-        followers: {
+        friends: {
             type: [String],
         },
-        followedByMe: {
-            type: [String],
-        },
+        title : {
+            type : String
+        }
     },
     { timestamps: true }
 );
