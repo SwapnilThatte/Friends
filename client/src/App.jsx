@@ -9,6 +9,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { isAuthenticated } from './cookieManager'
 import { Update } from './pages/update/Update'
 import { NewPost } from './pages/newPost/NewPost'
+import { Search } from './pages/searchPage/Search'
 // import dotenv from 'dotenv'
 
 
@@ -27,13 +28,14 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path='/'>
-        <Route path='login' element={<Login/>}/>
+        <Route path='login' element={isAuthenticated()?<Home/>:<Login/>}/>
         <Route index element={isAuthenticated()?<Home/>:<Login/>}/>
         <Route path='profile' element={!isAuthenticated()?<Login/>:<Profile/>}/>
         <Route path='home' element={!isAuthenticated()?<Login/>:<Home/>}/>
         <Route path='update' element={!isAuthenticated()?<Login/>:<Update/>}/>
         <Route path='newpost' element={!isAuthenticated()?<Login/>:<NewPost/>}/>
-        <Route path='register' element={<Register/>}/>
+        <Route path='search' element={!isAuthenticated()?<Login/>:<Search/>}/>
+        <Route path='register' element={isAuthenticated()?<Home/>:<Register/>}/>
       </Route>
     </Routes>
     

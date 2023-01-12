@@ -27,9 +27,9 @@ export const Navbar = () => {
                   <a href="#" className="home-nav-item">
                       Chat
                   </a>
-                  <a href="#" className="home-nav-item">
+                  <Link to="../search" relative='path' className="home-nav-item">
                       Search
-                  </a>
+                  </Link>
                   <button className='logout' onClick={e => handleLogout(e)}>Logout</button>
               </div>
           </div>

@@ -154,8 +154,10 @@ export const Update = () => {
                     <div className="curr-profile-title">{title}</div>
                 </div>
                 <div className="updations">
+                    {/* <h1>Hello</h1> */}
                     <form className="update-form">
                         <div className="update-form-group">
+                        
                             <label htmlFor="name" className="update-label">
                                 Update Name
                             </label>
