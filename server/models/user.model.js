@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema(
             type: [String],
         },
         title : {
-            type : String
+            type : String,
+            default : "Hey!"
         }
     },
     { timestamps: true }

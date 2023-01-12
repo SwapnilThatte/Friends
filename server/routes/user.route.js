@@ -245,7 +245,30 @@ router.post("/friends", async (req, res) => {
 
 
 
+// To Find users
+// @Required {userid, nameToSearch}
+router.post("/find", async (req, res) => {
+    // Authenticate user
+    if (authenticate(req)) {
+        // Check whether the request body is empty or not
+        if (req.body !== null || req.body !== undefined) {
+            console.log("Inside function");
+            const {userid, nameToSearch} = req.body
+            const query = new RegExp(nameToSearch, "i")
+            const users = await User.find({
+                name: query,
+            });
+            // console.log(users);
+            console.log(users);
+            res.json({users : users})
 
+        } else {
+            return res.status(400).json({ msg: "This is message" });
+        }
+    } else {
+        return res.status(401).json({ msg: "Unauthorized User" });
+    }
+})
 
 
 
