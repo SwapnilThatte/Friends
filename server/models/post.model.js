@@ -14,6 +14,10 @@ const PostSchema = new mongoose.Schema(
             type: String,
             require: true,
         },
+        post_desc : {
+            type : String,
+            require : true
+        },
         likes: {
             type: Number,
             default: 0,

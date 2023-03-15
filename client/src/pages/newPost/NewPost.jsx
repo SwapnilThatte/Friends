@@ -18,6 +18,7 @@ export const NewPost = () => {
   const [title, setTitle] = useState("")
   const [downloadURL, setDownloadUrl] = useState("");
   const [profile, setProfile] = useState({})
+  const [desc, setDesc] = useState("")
 
    const uploadPost = (file) => {
        const storage = getStorage(app);
@@ -103,6 +104,7 @@ export const NewPost = () => {
         const payload = {
         userid: userid,
         title: title,
+        post_desc : desc,
         imageurl : downloadURL
     };
     const response = await axios.post("http://localhost:5000/post/new", payload)
@@ -130,6 +132,15 @@ export const NewPost = () => {
                         onChange={e => setTitle(e.target.value)}
                         className="IMG-title-input" />
                       </div>
+                      
+                      <div className="newpost-desc">
+                        <label htmlFor="desc" className="IMGdesc">Description</label>
+                        <textarea rows="6" cols="50" type="text" name="desc" id="desc" 
+                        onChange={e => setDesc(e.target.value)}
+                        className="IMG-desc-input" />
+                      </div>
+
+
                       <div className="newpost-file">
                           <label htmlFor="file" className="newpost-file-btn">
                               Choose Photo

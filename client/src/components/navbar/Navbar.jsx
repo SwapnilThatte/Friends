@@ -9,6 +9,7 @@ export const Navbar = () => {
         event.preventDefault()
         clearCookie()
         localStorage.removeItem("userid")
+        localStorage.removeItem("feed")
         window.location="home";
         // location.redirect("/")
     }
@@ -16,18 +17,18 @@ export const Navbar = () => {
   return (
       <>
           <div className="home-navbar">
-              <div className="home-nav-logo">FRIENDS</div>
+              <div className="home-nav-logo">Friends</div>
               <div className="home-nav-items">
-                  <Link to="../profile" relative='path' className="home-nav-item">
+                  <Link to="../../profile" relative='path' className="home-nav-item">
                       My Profile
                   </Link>
-                  <Link to="../home" relative="path" className="home-nav-item">
+                  <Link to="../../home" relative="path" className="home-nav-item">
                       Home
                   </Link>
                   <a href="#" className="home-nav-item">
                       Chat
                   </a>
-                  <Link to="../search" relative='path' className="home-nav-item">
+                  <Link to="../../search" relative='path' className="home-nav-item">
                       Search
                   </Link>
                   <button className='logout' onClick={e => handleLogout(e)}>Logout</button>

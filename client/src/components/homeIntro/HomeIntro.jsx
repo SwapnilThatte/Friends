@@ -34,6 +34,7 @@ export const HomeIntro = () => {
 
   return (
       <>
+      
           <div className="profile-short">
               <img
                   src={profile.profilePhotoURL}
@@ -45,6 +46,7 @@ export const HomeIntro = () => {
                   <div className="short-profile-followers">
                       <div>{profile.friends?.length}</div>
                       Friends
+                      
                   </div>
                   <div className="short-profile-following">
                       <div>{posts?.length}</div>

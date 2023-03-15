@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
+import {useNavigate} from "react-router-dom";
+
 import './searchresult.css'
+
 export const SearchResult = ({info}) => {
+
+  const [user, setUser] = useState({})
+  const navigate = useNavigate()
+
+  const showProfile = event => {
+  navigate(`/exploreprofile/${info._id}`, {replace : true})  
+  }
+
+
   return (
-    <div>
+    <div onClick={e => showProfile(e)}>
         <div className="search-result">
             <div className="result-profile-photo">
                 <img src="vite.svg" className="result-image" alt="Profile Photo" />

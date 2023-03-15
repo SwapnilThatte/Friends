@@ -7,15 +7,15 @@ const Post = require("../models/post.model");
 /* Post Routes*/ 
 
 // Create a new Post,
-// @Required => { userid, title, imageurl }
+// @Required => { userid, title, imageurl, desc }
 router.post('/new', async (req, res) => {
    // Authenticate user 
     if(authenticate(req)) {
         // Check whether the request body is empty or not
         if (req.body !== null || req.body !== undefined) {
-            const {userid, title, imageurl} = req.body
+            const {userid, title, imageurl, post_desc} = req.body
             try {
-                const post = new Post({ owner: userid, title : title, imageurl: imageurl });
+                const post = new Post({ owner: userid, post_desc : post_desc, title : title, imageurl: imageurl });
                 const savedPost = await post.save()
                 return res.json({msg : "Post saved successfully", post : savedPost})
             }

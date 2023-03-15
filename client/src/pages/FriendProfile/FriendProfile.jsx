@@ -1,25 +1,33 @@
-import axios from "axios";
-import { Link } from "react-router-dom";
-import React, { useMemo } from "react";
+import React from 'react'
+import { Link, useParams } from "react-router-dom";
+import { useMemo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Navbar } from "../../components/navbar/Navbar";
 import { Profilepost } from "../../components/profilepost/Profilepost";
 import { getUser } from '../../cookieManager'
-import "./profile.css";
+import axios from 'axios';
 
-export const Profile = () => {
+import './friendProfile.css'
 
+export const FriendProfile = () => {
+ 
     const [profile, setProfile] = useState({})
     const [posts, setPosts] = useState([])
-let posts_arr = [];
+
+    let posts_arr = [];
+
+    const userid = window.location.pathname.split('/')[2]
+    const cookie = getUser();
+    const localUserID = localStorage.getItem('userid')
 
 
+
+    // UseEffect to get Profile
     useEffect(() => {
         const getProfile = async () => {
             try {
-                const cookie = getUser();
-                const userid = localStorage.getItem("userid");
+                // console.log(userid);
                 if (cookie !== undefined) {
                     const response = await axios.post(
                         "http://localhost:5000/user/profile",
@@ -28,22 +36,21 @@ let posts_arr = [];
                         }
                     );
                     setProfile(response.data.user);
-                    localStorage.setItem("User_Profile", response.data.user);
                 }
             } catch (err) {
                 console.log(err);
             }
         };
-        console.log(profile);
+        // console.log(profile);
         getProfile();
-
+        
     }, []);
-
+        
     const getPosts = async () => {
         // getposts
         try {
             const cookie = getUser();
-            const userid = localStorage.getItem("userid");
+            
             if (cookie !== undefined) {
                 const response = await axios.post(
                     "http://localhost:5000/post/getposts",
@@ -83,6 +90,42 @@ let posts_arr = [];
     
  useEffect(() => {getPosts()}, []);
 
+
+    const removeFriend = async event => {
+        // event.preventDefult()
+        try {
+            const response = await axios.post(
+                "http://localhost:5000/user/removefriend",
+                {
+                    userid: localUserID,
+                    friendid: userid,
+                }
+            );
+            console.log(response);
+            location.reload()
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    const addFriend = async event => {
+        try {
+            const response = await axios.post("http://localhost:5000/user/addfriend", 
+            {
+                userid : localUserID,
+                friendid : userid
+            }) 
+            console.log(response);
+            location.reload()
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+
+
+
     return (
         <>
             <Navbar />
@@ -117,35 +160,30 @@ let posts_arr = [];
                                     <div className="follower-title">Posts</div>
                                 </div>
 
-                                <Link
-                                    to="../update"
-                                    relative="path"
-                                    className="update-link"
-                                >
-                                    <span className="material-symbols-outlined edit-logo">
-                                        edit
-                                    </span>
-                                    {/* <br /> */}
-                                    Edit
-                                </Link>
-                                <Link
-                                    to="../newpost"
-                                    relative="path"
-                                    className="new-post"
-                                >
-                                    <span className="material-symbols-outlined ">
-                                        add
-                                    </span>
-                                    {/* <br /> */}
-                                    New Post
-                                </Link>
+                                {profile.friends?.includes(localUserID) ? (
+                                    <button
+                                        className="friend-btn"
+                                        onClick={(e) => removeFriend(e)}
+                                    >
+                                        Remove Friend
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="friend-btn"
+                                        onClick={(e) => addFriend(e)}
+                                    >
+                                        Add Friend
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
 
                     <div className="all-posts">
-                        <div className="posts-title">My Posts</div>
-                        {/* <span className="material-symbols-outlined">add</span> */}
+                        <div className="posts-title">
+                            {profile.name}'s Posts
+                        </div>
+                        {/* <span class="material-symbols-outlined">add</span> */}
                         <div className="posts-grid">
                             <div className="newPost"></div>
                             {[
@@ -168,4 +206,4 @@ let posts_arr = [];
             </div>
         </>
     );
-};
+}
