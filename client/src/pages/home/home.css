@@ -2,8 +2,8 @@
     /* background-color: rgba(0, 255, 255, 0.205); */
     box-sizing: border-box;
     padding: 0  ;
-    /* display: flex; */
-    /* flex-direction: column; */
+    display: flex;
+    /* flex-direction: row; */
     /* align-items: center; */
     
     /* justify-content: center; */
@@ -13,14 +13,14 @@
 /* *********************************************** */
 
 .home-post-container {
-    margin-top: 4rem;
+    margin-top: 2rem;
     padding: 1rem ;
-    margin-left: 20.3rem;
+    margin-left: 19rem;
     /* margin-left: 2rem; */
     /* background-color: rgba(165, 42, 42, 0.185); */
-    /* gap: 30px; */
+    gap: 30px;
     /* background-color: aquamarine; */
-    width: 80%;
+    width: 60%;
     /* display: flex; */
     /* flex-direction: column; */
     /* align-items: center; */
@@ -30,6 +30,7 @@
     /* width: 100vw; */
     /* background-color: rgba(137, 43, 226, 0.288); */
     display: flex;
+    
     gap: 30px;
     /* align-items: center; */
     /* justify-content: space-between; */

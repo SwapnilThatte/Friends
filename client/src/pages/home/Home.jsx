@@ -11,96 +11,56 @@ import "./home.css";
 
 export const Home = () => {
 
-    document.title = "FRIENDS"
-    const [posts, setPosts] = useState([]);
-    let posts_arr = [];
-
-    const getPosts = async (userid="") => {
-        // getposts
-        try {
-            const cookie = getUser();
-            // const userid = localStorage.getItem("userid");
-            if (cookie !== undefined) {
-                const response = await axios.post(
-                    "http://localhost:5000/post/getposts",
-                    {
-                        userid: userid,
-                    }
-                );
-
-                for (let i = 0; i < response.data.posts.length; i++) {
-                    posts_arr.push(response.data.posts[i]);
-                }
-
-                let mymap = new Map();
-
-                let unique = posts_arr.filter((el) => {
-                    const val = mymap.get(el._id);
-                    if (val) {
-                        if (el.id < val) {
-                            mymap.delete(el._id);
-                            mymap.set(el._id, el.title);
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                    mymap.set(el._id, el.title);
-                    return true;
-                });
-                return unique
-                // setPosts(unique);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
+    document.title = "Friends"
+    const [feed, setFeed] = useState({data:null, status:"loading"})
+    const [posts, setPosts] = useState([])
+    const [loaderLimit, setLoaderLimit] = useState(true)
+   const cookie = getUser();
+            const userid = localStorage.getItem("userid");
+            let res ;
     useEffect(() => {
-
+        if (loaderLimit) {
+            setLoaderLimit(false)
+        }else {
+            setLoaderLimit(false)
+        }
         const getFeed = async () => {
-            let all_users = []
+            
             try {
-                const cookie = getUser();
-                const userid = localStorage.getItem("userid");
                 if (cookie !== undefined) {
-                    const response_followers = await axios.post(
-                        "http://localhost:5000/user/followingme",
-                        {
-                            userid: userid,
-                        }
-                    );
-                    console.log(response_followers);
+                    await axios.post("http://localhost:5000/user/feed",
+                    {
+                        userid : userid
+                    })
+                    .then((response) => {
+                        setFeed({status : "loaded", data : response})
+                       res = response.data.feed
+                       localStorage.setItem("feed", JSON.stringify(response.data.feed))
+                        
+                    })
 
-                    const response_following = await axios.post(
-                        "http://localhost:5000/user/followingme",
-                        {
-                            userid: userid
-                        }
-                    );  
-
-                    if (response_followers.status === 200 && response_following.status === 200) {
-                         all_users = [
-                             ...new Set([
-                                 ...response_followers,
-                                 ...response_following,
-                             ]),
-                         ];
-                         console.log(all_users);
-                    }
-
-                   
+                    console.log("res ", res);
+                    setPosts(res)
+                    console.log("posts ", posts);
+                    // res.map(element => {
+                    //    console.log(element); 
+                    // });
+                    
+                    // console.log(response.data.feed);
+                    // setFeed(response.data.feed);
+                    // setTimeout(() => {
+                        
+                        // console.log(response);
+                        // console.log("Feed ",feed);
+                    // },2000)
                 }
-            }
-            catch (err) {
 
+            } catch (error) {
+                console.log(error);
             }
         }
         getFeed()
-
-        //   getPosts();
-    }, []);
-
+    },[])
 
 
 
@@ -115,20 +75,31 @@ export const Home = () => {
 
                     <div>
                         <div className="home-post-container">
-                            {[
-                                ...new Set(
-                                    posts.map((ele) => ({
-                                        id: ele._id,
-                                        imageurl: ele.imageurl,
-                                        owner: ele.owner,
-                                        likes: ele.likes,
-                                        title: ele.title,
-                                        updatedAt: ele.updatedAt,
-                                    }))
-                                ),
-                            ].map((ele) => (
-                                <Post key={ele._id} props={ele} />
-                            ))}
+                            {
+                                JSON.parse(localStorage.getItem("feed")).map(
+                                    (ele) => (
+                                        <Post key={ele._id} props={ele} />
+                                    )
+                                )
+                                // res.map((ele) => (
+                                //     <Post key={ele._id} props={ele} />
+                                // ))
+
+                                // [
+                                //     ...new Set(
+                                //         res.map((ele) => ({
+                                //             id: ele._id,
+                                //             imageurl: ele.imageurl,
+                                //             owner: ele.owner,
+                                //             likes: ele.likes,
+                                //             title: ele.title,
+                                //             updatedAt: ele.updatedAt,
+                                //         }))
+                                //     ),
+                                // ].map((ele) => (
+                                //     <Post key={ele._id} props={ele} />
+                                // ))
+                            }
                         </div>
                     </div>
                 </div>

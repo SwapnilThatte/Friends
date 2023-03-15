@@ -1,0 +1,16 @@
+.friend-btn {
+    /* background-color: aquamarine; */
+    border: none;
+    outline:none;
+    font-size: large;
+    background-color: transparent;
+    border: 2px solid blue;
+    color: blue;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 5px;
+}
+.friend-btn:hover {
+    color: white;
+    background-color: blue;
+}

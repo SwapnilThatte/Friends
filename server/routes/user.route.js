@@ -181,6 +181,50 @@ router.post('/search', async (req, res) => {
 //     }
 // })
 
+// To get feed on home page
+// @Required {userid}
+router.post('/feed', async (req, res) => {
+// Authenticate user 
+    if (authenticate(req)) {
+        // Check whether the request body is empty or not
+        if (req.body !== null || req.body !== undefined) {
+            try {
+                const {userid} = req.body
+                const user = await User.findById(userid)
+                const friends = user.friends
+                let feed = await Post.find({
+                    'owner' : {$in : friends}
+                })
+                console.log(feed);
+
+                
+                
+                // friends.forEach(async element => {
+                //     let feed_holder = await Post.find({ owner: element });
+                //     feed.push(feed_holder)
+                //     console.log(feed_holder);
+                //     console.log("feed ===> \n", feed);
+                // })
+                console.log(feed);
+
+                setTimeout(() => {
+                    return res.status(200).json({feed : feed})
+                }, 2000);
+                
+            }
+            catch(err) {
+                return res.status(400).json({ msg: "ERROR IN FETCHING FEED" });
+            }
+        }
+        else {
+            return res.status(400).json({msg : ""})
+        }
+    }
+    else {
+        return res.status(401).json({ msg: "Unauthorized User" });
+    }
+})
+
 
 
 // Update profile 
@@ -233,6 +277,15 @@ router.post("/friends", async (req, res) => {
     if (authenticate(req)) {
         // Check whether the request body is empty or not
         if (req.body !== null || req.body !== undefined) {
+            try {
+                console.log(req.body.userid);
+                const user = await User.findById(req.body.userid)
+                console.log(user);
+                res.status(200).json({friendsID : user.friends})
+            }
+            catch(err) {
+                return res.status(400).json({msg : "ERROR IN FETCHING FREIENDS"})
+            }
         }
         else {
             return res.status(400).json({msg : ""})
@@ -252,24 +305,104 @@ router.post("/find", async (req, res) => {
     if (authenticate(req)) {
         // Check whether the request body is empty or not
         if (req.body !== null || req.body !== undefined) {
-            console.log("Inside function");
             const {userid, nameToSearch} = req.body
             const query = new RegExp(nameToSearch, "i")
             const users = await User.find({
-                name: query,
+                name: {
+                    $regex : nameToSearch,
+                    $options : 'i'
+                },
             });
             // console.log(users);
             console.log(users);
             res.json({users : users})
 
         } else {
-            return res.status(400).json({ msg: "This is message" });
+            return res.status(400).json({ msg: "Empty request body" });
         }
     } else {
         return res.status(401).json({ msg: "Unauthorized User" });
     }
 })
 
+
+// Helper function for /removefriend endpoint
+function getIndex(id, array) {
+    array.forEach((element, index) => {
+       if(element === id) {
+        return index
+       }
+    })
+    return -1 ;
+}
+// Remove Friend
+// @Required {userid, firendID}
+router.post("/removefriend", async (req, res) => {
+    // Authenticate user
+    if (authenticate(req)) {
+        // Check whether the request body is empty or not
+        if (req.body !== null || req.body !== undefined) {
+            const {userid, friendid} = req.body
+          // Remove friendid from User's friends array
+        //   const currUser = await User.findById(userid);
+        //   console.log("Current user\n",currUser);
+        //   const currUserArrIdx = getIndex(friendid, currUser.friends)
+        //   currUser.friends = currUser.friends.splice(currUserArrIdx, 1)
+        //   await currUser.save()
+               const currUser = await User.findOneAndUpdate(
+                   { _id: userid },
+                   { $pull: { friends: friendid } }
+               );
+
+          
+          // Remove userid from Friend's friends array
+          console.log("Friend ID -> \t",friendid);
+        //    const friendUser = await User.findById(friendid);
+        //    console.log("Friend user \n",friendUser);
+        //    const FriendUserArrIdx = getIndex(userid, currUser.friends);
+        //     friendUser.friends = friendUser.friends.splice(FriendUserArrIdx, 1)
+        //     await friendUser.save()
+        const friendUser = await User.findOneAndUpdate({_id : friendid}, {$pull : {friends : userid}})
+
+            res.status(200).json({msg : "Success", currUser, friendUser})
+        }
+        else {
+            return res.status(400).json({ msg: "Empty request body" });
+        }
+    } else {
+        return res.status(401).json({ msg: "Unauthorized User" });
+    }
+})
+
+
+router.post('/addfriend', async (req, res) => {
+       // Authenticate user
+    if (authenticate(req)) {
+        // Check whether the request body is empty or not
+        if (req.body !== null || req.body !== undefined) {
+            const {userid, friendid} = req.body
+            console.log("User : ", userid, "  Friendid : ", friendid);
+            // add friendid to User's (userid) friend array
+            const currUser = await User.findById(userid)
+            currUser.friends.push(friendid)
+            await currUser.save()
+            console.log("current user : ", currUser);
+
+            // add userid to Friend's (friendid) friend array
+            const friendUser = await User.findById(friendid)
+            console.log("friend User : ", friendUser);
+            friendUser.friends.push(userid)
+            await friendUser.save()
+
+            return res.status(200).json({msg : "successful", currUser, friendUser})
+        }
+        else {
+            return res.status(400).json({ msg: "Empty request body" });
+        }
+    } else {
+        return res.status(401).json({ msg: "Unauthorized User" });
+    }  
+})
 
 
 module.exports = router

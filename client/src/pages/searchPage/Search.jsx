@@ -10,14 +10,14 @@ export const Search = () => {
   
   let hashMap = new Map();
 const userid = localStorage.getItem("userid")
-  console.log("Element Rendered");
+//   console.log("Element Rendered");
   const [results, setResults] = useState([])
   const [name, setName] = useState("")
 
 const find = async () => {
     try {
       const res = await axios.post("http://localhost:5000/user/find", {
-          nameToSearch: name,
+          nameToSearch: name.toLowerCase(),
       });
       const usersArr = res.data.users
       let arr = []
@@ -76,7 +76,7 @@ const find = async () => {
                   </div>
                   <button className="search-btn" onClick={e => handleSearch(e)}>
                       <div className="search-logo">
-                          <span class="material-symbols-outlined">search</span>
+                          <span className="material-symbols-outlined">search</span>
                       </div>
                       Search
                   </button>
@@ -85,7 +85,8 @@ const find = async () => {
 
           <div className="search-result-container">
               {results.map((ele) => (
-                  <SearchResult info={ele} id={ele._id} />
+                // console.log(ele._id)
+                  <SearchResult info={ele} key={ele._id} />
               ))}
           </div>
       </div>
