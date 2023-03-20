@@ -10,3 +10,28 @@
     width: 100vw;
     /* height: 83vh; */
 }
+
+.searchbar-wrapper {
+    padding-top: 4rem;
+}
+
+
+@media screen and (min-width : 360px) and (max-width: 1024px) {
+    .searchbox {
+        flex-direction: column;
+        padding-bottom: 2rem 0;
+    }
+    .searchbar-wrapper {
+        padding: 2rem 1rem ;
+    }
+    .search-input-txt{
+        width: 100%;
+    }
+    .search-input {
+        width: 100%;
+    }
+    .search-result-container {
+        padding: 1rem;
+    }
+
+}

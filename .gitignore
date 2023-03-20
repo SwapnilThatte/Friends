@@ -2,3 +2,5 @@ node_modules
 hello.js
 currentFunctionalities.md
 .env
+BUGS.md
+firebase.js

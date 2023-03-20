@@ -1,6 +1,10 @@
 .post {
-    
+    min-width: 16rem;
+    max-width: 70%;
     padding: 10px 20px;
+    z-index: 1000;
+    /* left: 30px; */
+    float: right;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
@@ -8,12 +12,17 @@
     gap: 10px;
     border-radius: 10px;
     /* background-color: whitesmoke; */
-    border: 1px solid rgb(202, 202, 202);
+    /* border: 1px solid rgb(202, 202, 202); */
+    box-shadow: 0 0 8px 4px rgb(228, 228, 228);
+    cursor: pointer;
     /* box-shadow: 0 0 20px 2px rgb(202, 202, 202); */
     /* margin: auto; */
     margin: 1.4rem 0;
     height: fit-content;
     /* margin: 10rem 0; */
+}
+.post:hover {
+box-shadow: 0 0 8px 4px rgb(211, 211, 211);
 }
 
 .post-owner-info{

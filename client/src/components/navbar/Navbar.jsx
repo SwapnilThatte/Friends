@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './navbar.css'
 import { clearCookie } from '../../cookieManager'
 import { Link, useLocation } from 'react-router-dom'
@@ -10,8 +10,8 @@ export const Navbar = () => {
         clearCookie()
         localStorage.removeItem("userid")
         localStorage.removeItem("feed")
+        localStorage.removeItem("post_friends");
         window.location="home";
-        // location.redirect("/")
     }
 
   return (
@@ -25,11 +25,14 @@ export const Navbar = () => {
                   <Link to="../../home" relative="path" className="home-nav-item">
                       Home
                   </Link>
-                  <a href="#" className="home-nav-item">
+                  <Link to="../../chat" relative='path' className="home-nav-item">
                       Chat
-                  </a>
+                  </Link>
                   <Link to="../../search" relative='path' className="home-nav-item">
                       Search
+                  </Link>
+                  <Link to="../../about" relative='path' className="home-nav-item">
+                      About Us
                   </Link>
                   <button className='logout' onClick={e => handleLogout(e)}>Logout</button>
               </div>

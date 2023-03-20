@@ -2,14 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Navbar } from '../../components/navbar/Navbar'
 import './newPost.css'
 import {getUser} from '../../cookieManager'
-import {
-    getStorage,
-    ref,
-    uploadBytesResumable,
-    getDownloadURL,
-} from "firebase/storage";
-import app from "../../firebase";
 import axios from 'axios'
+
+import { predictions } from '../../toxicity_detection';
 
 export const NewPost = () => {
     const userid = localStorage.getItem("userid");
@@ -19,45 +14,6 @@ export const NewPost = () => {
   const [downloadURL, setDownloadUrl] = useState("");
   const [profile, setProfile] = useState({})
   const [desc, setDesc] = useState("")
-
-   const uploadPost = (file) => {
-       const storage = getStorage(app);
-       const userid = localStorage.getItem("userid");
-       const fileName = "POST" + userid+ new Date().getTime();
-       const storageRef = ref(storage, fileName);
-       const uploadTask = uploadBytesResumable(storageRef, file);
-
-       uploadTask.on(
-           "state_changed",
-           (snapshot) => {
-               // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-               const progress =
-                   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-               console.log("Upload is " + progress + "% done");
-               switch (snapshot.state) {
-                   case "paused":
-                       console.log("Upload is paused");
-                       break;
-                   case "running":
-                       console.log("Upload is running");
-                       break;
-                   default:
-                       break;
-               }
-           },
-           (error) => {
-               console.log("An Error Occoured while uploading a file\n", error);
-           },
-           () => {
-               // Upload completed successfully, now we can get the download URL
-               getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                   setDownloadUrl(downloadURL);
-                   console.log("File available at", downloadURL);
-               });
-           }
-       );
-   };
-
 
   useEffect(() => {
       const getProfile = async () => {
@@ -70,48 +26,65 @@ export const NewPost = () => {
                           userid: userid,
                       }
                   );
-                  console.log("From Profile Fetch ==> \n", response);
+                  
                   setDownloadUrl(response.data.user.profilePhotoURL);
                   setProfile(response.data.user);
               }
           } catch (err) {
-              console.log(err);
+            //   alert("An error occoured");
           }
       };
-      console.log(profile);
+      
       getProfile();
   }, []);
 
 
-   const onImageChange = async event => {
-    event.preventDefault()
-    setImage(event.target.files[0]);
-    if (event.target.files && event.target.files[0]) {
-        console.log(URL.createObjectURL(event.target.files[0]));
-        setImage(URL.createObjectURL(event.target.files[0]));
-
-        // uploadPost(image)
-
-
-
-    }
+   const getToxicityType = (predictions) => {
+       
+       predictions.forEach((ele, idx) => {
+        if (ele.results[0].match === true) {
+            return [true, ele.label]
+        }
+       })
+       return [false, "non toxic"]
    }
 
    const handleClick = async event => {
+  
     event.preventDefault()
-    uploadPost(image);
-    setTimeout(async () => {
-        const payload = {
-        userid: userid,
-        title: title,
-        post_desc : desc,
-        imageurl : downloadURL
-    };
-    const response = await axios.post("http://localhost:5000/post/new", payload)
-    if (response.status === 200) {
-        console.log(response);
-    }
-    }, 1000);
+    
+    const toxicity_arr = await predictions(desc)
+    const report = getToxicityType(toxicity_arr);
+    
+    if (!report[0]) {
+            if (image !== undefined || image !== null) {
+
+                const reader = new FileReader()
+                reader.readAsDataURL(image)
+    
+                reader.onload = async () => {
+                    const imageString = reader.result
+                                    
+                    const payload = {
+                        userid: userid,
+                        title: title,
+                        post_desc: desc,
+                        imageurl: imageString,
+                    };
+                    const response = await axios.post(
+                        "http://localhost:5000/post/new",
+                        payload
+                        );
+                        if (response.status === 200) {
+                           
+                        }
+                    }
+                }
+         } else {
+             alert(`Post description is ${report[1]}`);
+         }     
+    
+   
 
 
    }
@@ -151,8 +124,8 @@ export const NewPost = () => {
                               id="file"
                               accept="image/*"
                               onChange={(e) => {
-                                  console.log(e.target.files);
-                                  onImageChange(e)
+                                
+                                  setImage(e.target.files[0]);
                               }}
                               className="newpost-uplod-file-btn"
                           />

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { getUser } from "../../cookieManager";
 import axios from 'axios'
 import "./home.css";
+import { FriendsContainer } from "../../components/friendsContainer/FriendsContainer";
 
 
 
@@ -15,6 +16,7 @@ export const Home = () => {
     const [feed, setFeed] = useState({data:null, status:"loading"})
     const [posts, setPosts] = useState([])
     const [loaderLimit, setLoaderLimit] = useState(true)
+    const [loaded, setLoaded] = useState(false)
    const cookie = getUser();
             const userid = localStorage.getItem("userid");
             let res ;
@@ -33,38 +35,32 @@ export const Home = () => {
                         userid : userid
                     })
                     .then((response) => {
+                        
                         setFeed({status : "loaded", data : response})
                        res = response.data.feed
-                       localStorage.setItem("feed", JSON.stringify(response.data.feed))
+                       setTimeout(() => {
+                        
+                           localStorage.setItem("feed", JSON.stringify(response.data.feed))
+                           localStorage.setItem("post_friends", JSON.stringify(response.data.user_friends))
+                           setLoaded(true)
+                       }, 3000);
                         
                     })
 
-                    console.log("res ", res);
+                    ;
                     setPosts(res)
-                    console.log("posts ", posts);
-                    // res.map(element => {
-                    //    console.log(element); 
-                    // });
-                    
-                    // console.log(response.data.feed);
-                    // setFeed(response.data.feed);
-                    // setTimeout(() => {
-                        
-                        // console.log(response);
-                        // console.log("Feed ",feed);
-                    // },2000)
+                   
                 }
 
             } catch (error) {
-                console.log(error);
+                // alert("An error occoured");
             }
         }
         getFeed()
     },[])
 
 
-
-
+    
 
     return (
         <>
@@ -76,11 +72,15 @@ export const Home = () => {
                     <div>
                         <div className="home-post-container">
                             {
-                                JSON.parse(localStorage.getItem("feed")).map(
-                                    (ele) => (
-                                        <Post key={ele._id} props={ele} />
-                                    )
-                                )
+                                // setTimeout(() => {
+                                    loaded?
+                                    JSON.parse(localStorage.getItem("feed")).map(
+                                        (ele) => (
+                                            <Post key={ele._id} props={ele} />
+                                        )
+                                    ):
+                                    <h1>Loading...</h1>
+                                // }, 2000)
                                 // res.map((ele) => (
                                 //     <Post key={ele._id} props={ele} />
                                 // ))
@@ -102,6 +102,8 @@ export const Home = () => {
                             }
                         </div>
                     </div>
+
+                    <FriendsContainer/>
                 </div>
             </div>
         </>

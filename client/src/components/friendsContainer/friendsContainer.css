@@ -1,0 +1,22 @@
+.fc {
+    position: fixed;
+    padding: 2rem 1rem;
+    background-color: whitesmoke;
+    width: 32%;
+
+        /* background-color: blueviolet !important; */
+    /* border-radius: 10rem; */
+        height: 100%;
+    /* margin-left: 52rem; */
+    margin-left: 70%;
+    /* float:inline-end; */
+    width: 100%;
+    /* border-radius: 8px; */
+    
+    /* margin-left: 17rem; */
+    /* position: absolute; */
+}
+.fc-title {
+    margin-top: 3rem;
+    font-size: xx-large;
+}

@@ -1,0 +1,39 @@
+.heart-icon {
+    display: inline-block;
+    width: 40px;
+    /* background-color: rebeccapurple; */
+    height: 40px;
+    position: relative;
+    margin-left: 28px;
+    transform: scale(1.2,1.2);
+    margin-top: 10px;
+}
+.heart-icon:hover {
+    transform: scale(1.5, 1.5);
+}
+
+.heart-icon::before,
+.heart-icon::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -8px;
+    width: 20px;
+    height: 30px;
+    border-radius: 10px 10px 0 0;
+    transform: rotate(-45deg);
+    background-color: #f3153a;
+}
+/* ff4d4d */
+.heart-icon::after {
+    left: 0;
+    background-color: #f3153a;
+    transform: rotate(45deg);
+}
+
+.like-count {
+    width: 100%;
+    margin-left: 10px;
+    font-size: larger;
+}

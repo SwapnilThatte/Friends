@@ -2,7 +2,7 @@ const router = require('express').Router()
 const authenticate = require("../authenticateUser");
 const User = require("../models/user.model");
 const Post = require("../models/post.model");
-
+// const isToxic = require('../toxicityDetection')
 
 /* Post Routes*/ 
 
@@ -15,9 +15,18 @@ router.post('/new', async (req, res) => {
         if (req.body !== null || req.body !== undefined) {
             const {userid, title, imageurl, post_desc} = req.body
             try {
-                const post = new Post({ owner: userid, post_desc : post_desc, title : title, imageurl: imageurl });
-                const savedPost = await post.save()
-                return res.json({msg : "Post saved successfully", post : savedPost})
+                    const post = new Post({
+                        owner: userid,
+                        post_desc: post_desc,
+                        title: title,
+                        imageurl: imageurl,
+                    });
+                    const savedPost = await post.save();
+                    return res.json({
+                        msg: "Post saved successfully",
+                        post: savedPost,
+                    });
+                
             }
             catch(err) {
                 return res.json({msg : "Error in uploading post", success : false})
@@ -33,33 +42,32 @@ router.post('/new', async (req, res) => {
 })
 
 // Like the post
-// @Required => postid
+// @Required => postid, likecount
 router.put('/like', async (req, res) => {
      // Authenticate user 
     if(authenticate(req)) {
         // Check whether the request body is empty or not
         if (req.body !== null || req.body !== undefined) {
             // Get postid and email from requsest
-            const {postid} = req.body
+            const {postid, likecount} = req.body
             try {
                 // Fetching post using postid
-                const post = await Post.findById(postid);
+                const post = await Post.find({"_id" : postid});
+                
                 // Ensure that post exists
                 if (post !== null || post !== undefined) {
                     // Incrementing the like count
-                    const updatedLikeCount = post.likes + 1;
-                    const updatedPost = await Post.findByIdAndUpdate(
-                        postid,
-                        updatedLikeCount,
-                        { returnOriginal: false }
-                    );
-                    return res.json({ msg: "Like Count Updated" });
+                    const post_updated = await Post.update(
+                        { _id: postid },
+                        { $set: { likes: likecount +1} }
+                        );
+                    return res.status(200).json({ msg: "Like Count Updated", post });
                 } else {
-                    return res.json({ msg: "Post does not exists" });
+                    return res.status(404).json({ msg: "Post does not exists" });
                 }
             }
             catch(err) {
-                return res.json({msg : "Error in updating like count"})
+                return res.status(500).json({msg : "Error in updating like count"})
             }
         }
     }

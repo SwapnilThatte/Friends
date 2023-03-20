@@ -1,6 +1,4 @@
 # Friends
-Social Media Web Application built using MERN stack.
-
-## The project is under development
-
+<br>
+Social Media application built using MERN stack
 
