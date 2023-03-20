@@ -13,23 +13,21 @@ export const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        console.log("Inside function");
+
         const payload = {email : email, password : password}
         try {
             const response = await axios.post(
                 "http://localhost:5000/auth/login",
                 payload
             );
-            console.log(response)
             localStorage.setItem("userid" , response.data.user._id)
             document.cookie = "auth-token="+response.data.authorization 
-        //    setTimeout(() => {
+
             window.location = "home";
-        //    }, 99999);
             
         }
         catch(err) {
-            console.log(err)
+            // alert("Error in login, please try again")
         }
     }
 

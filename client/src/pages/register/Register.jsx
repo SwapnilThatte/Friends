@@ -24,18 +24,19 @@ export const Register = () => {
         }
         try {
             const response = await axios.post("http://localhost:5000/auth/register", payload)
-            console.log(response)
+            
             if (response.status === 200) {
                 window.location = "home"
             }
             else {
-                console.log("BAD REQ");
+                alert("Bad Request");
             }
 
-            // location.redirect("home")
+            
         }
         catch(err) {
-            console.log(err)
+            console.log(err);
+            alert("Error in registering, please try again")
         }
 
     }
@@ -46,7 +47,7 @@ export const Register = () => {
           <div className="register-logo">
               <div className="register-logo-text">FRIENDS</div>
               <div className="register-logo-subtitle">
-                  Where the world meets!
+                  Social media for everyone 
               </div>
           </div>
           <form className="register-form-container">

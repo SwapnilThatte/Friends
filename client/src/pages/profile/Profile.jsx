@@ -31,10 +31,10 @@ let posts_arr = [];
                     localStorage.setItem("User_Profile", response.data.user);
                 }
             } catch (err) {
-                console.log(err);
+                // alert("An error occoured");
             }
         };
-        console.log(profile);
+        // alert("An error occoured");
         getProfile();
 
     }, []);
@@ -77,7 +77,7 @@ let posts_arr = [];
             }
         } 
         catch (err) {
-            console.log(err);
+        //  alert("An error occoured");
         }
     };
     
@@ -157,6 +157,7 @@ let posts_arr = [];
                                         likes: ele.likes,
                                         title: ele.title,
                                         updatedAt: ele.updatedAt,
+                                        desc : ele.post_desc
                                     }))
                                 ),
                             ].map((ele) => (

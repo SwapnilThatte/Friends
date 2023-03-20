@@ -1,9 +1,34 @@
+.profile-post-card {
+    width: 20%;
+    /* background-color: whitesmoke; */
+    box-shadow: 0 0 1px 5px whitesmoke;
+    height: 40%;
+    padding: 1rem;
+    border-radius: 6px;
+
+}
+.profile-post-card:hover {
+    cursor: pointer;
+    box-shadow: 0 0 8px 4px rgb(211, 211, 211);
+}
+.pp-img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pp-title {
+    font-size: x-large;
+    text-align: center;
+}
+
+.pp-desc {
+    text-align: center;
+    /* margin-left: 10px; */
+}
+
 .profile-posts {
     border-radius: 10px;
-        cursor: pointer;
-        width: 16rem;
-            height: 16rem;
-}
-.profile-posts:hover {
-    transform: scale(1.1, 1.1);
+        /* cursor: pointer; */
+        width: 10rem;
+            height: 10rem;
 }

@@ -18,15 +18,15 @@ export const HomeIntro = () => {
                               userid: userid,
                           }
                       );
-                    //   console.log(response);
+                    
                       setProfile(response.data.user);
                       setPosts(response.data.posts)
                   }
               } catch (err) {
-                  console.log(err);
+                //   alert(err);
               }
           };
-          console.log(profile);
+          
           getProfile();
       }, []);
 

@@ -27,7 +27,7 @@ export const FriendProfile = () => {
     useEffect(() => {
         const getProfile = async () => {
             try {
-                // console.log(userid);
+                
                 if (cookie !== undefined) {
                     const response = await axios.post(
                         "http://localhost:5000/user/profile",
@@ -38,10 +38,10 @@ export const FriendProfile = () => {
                     setProfile(response.data.user);
                 }
             } catch (err) {
-                console.log(err);
+                // alert("An error occoured");
             }
         };
-        // console.log(profile);
+        
         getProfile();
         
     }, []);
@@ -84,7 +84,7 @@ export const FriendProfile = () => {
             }
         } 
         catch (err) {
-            console.log(err);
+            // alert("An error occoured");
         }
     };
     
@@ -92,7 +92,7 @@ export const FriendProfile = () => {
 
 
     const removeFriend = async event => {
-        // event.preventDefult()
+        
         try {
             const response = await axios.post(
                 "http://localhost:5000/user/removefriend",
@@ -101,10 +101,10 @@ export const FriendProfile = () => {
                     friendid: userid,
                 }
             );
-            console.log(response);
+            
             location.reload()
         } catch (error) {
-            console.log(error);
+            // alert("An error occoured");
         }
     }
 
@@ -116,11 +116,11 @@ export const FriendProfile = () => {
                 userid : localUserID,
                 friendid : userid
             }) 
-            console.log(response);
+            
             location.reload()
         }
         catch(err) {
-            console.log(err);
+            // alert("An error occoured");
         }
     }
 

@@ -11,7 +11,7 @@ const app = express()
 // Important Middlewares
 app.use(cors());
 dotenv.config()
-app.use(express.json());
+app.use(express.json({limit : "100mb"}));
 app.use(cookieParser());
 
 // Settingup the port
@@ -20,9 +20,14 @@ const PORT = process.env.PORT | 5000
 mongoose.set("strictQuery", false);
 
 // Database Connection
-mongoose.connect(process.env.DB_CONNECT, () => {
-   console.log(`Connected to MongoDB Database`);
-});
+mongoose.connect(process.env.DB_CONNECT,{
+   useNewUrlParser : true,
+   useUnifiedTopology : true
+}).then( () => {
+    console.log(`Connected to MongoDB Database`);
+}).catch(err => {
+   console.log(err);
+})
 
 
 // Routing Auth Requests

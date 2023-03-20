@@ -10,58 +10,56 @@ export const Search = () => {
   
   let hashMap = new Map();
 const userid = localStorage.getItem("userid")
-//   console.log("Element Rendered");
-  const [results, setResults] = useState([])
-  const [name, setName] = useState("")
+const [results, setResults] = useState([])
+const [name, setName] = useState("")
 
 const find = async () => {
-    try {
-      const res = await axios.post("http://localhost:5000/user/find", {
-          nameToSearch: name.toLowerCase(),
-      });
-      const usersArr = res.data.users
-      let arr = []
-      for (let i=0; i<usersArr.length; i++) {
-        if (usersArr[i]._id !== userid) {
-          arr.push(usersArr[i]);
-        } 
-      }
-      
-
-                let unique = arr.filter((el) => {
-                    const val = hashMap.get(el._id);
+  try {
+    const res = await axios.post("http://localhost:5000/user/find", {
+      nameToSearch: name.toLowerCase(),
+    });
+    const usersArr = res.data.users
+    let arr = []
+    for (let i=0; i<usersArr.length; i++) {
+      if (usersArr[i]._id !== userid) {
+        arr.push(usersArr[i]);
+      } 
+    }
+    
+    
+    let unique = arr.filter((el) => {
+      const val = hashMap.get(el._id);
                     if (val) {
-                        if (el.id < val) {
-                            hashMap.delete(el._id);
-                            hashMap.set(el._id, el.name);
-                            return true;
-                        } else {
-                            return false;
-                        }
+                      if (el.id < val) {
+                        hashMap.delete(el._id);
+                        hashMap.set(el._id, el.name);
+                        return true;
+                      } else {
+                        return false;
+                      }
                     }
                     hashMap.set(el._id, el.name);
                     return true;
-                });
+                  });
                 setResults(unique)
-      console.log(unique);
-    }
-    catch(err) {
-      console.log("ERROR\n", err);
+              }
+              catch(err) {
+                // alert("An error occoured")
     }
   }
-//  useEffect(() => {find()}, []);
-
-
- const handleSearch = (e) => {
+  
+  
+  const handleSearch = (e) => {
     e.preventDefault()
     find()
- }
-
-
-
+  }
+  
+  
+  
   return (
-      <div>
+    <div>
           <Navbar />
+  
           <div className="searchbar-wrapper">
               <div className="searchbox">
                   <div className="search-input">
@@ -85,7 +83,7 @@ const find = async () => {
 
           <div className="search-result-container">
               {results.map((ele) => (
-                // console.log(ele._id)
+                
                   <SearchResult info={ele} key={ele._id} />
               ))}
           </div>

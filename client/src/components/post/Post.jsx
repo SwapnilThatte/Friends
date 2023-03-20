@@ -1,22 +1,22 @@
 import axios from 'axios';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
+import { Like } from '../like/Like';
 import './post.css'
 export const Post = (props) => {
     // const [like_image, setLike_image] = useState("like_blank.png")
     // const [likeCounter, setLikeCounter] = useState(0)
     const [likeEvntCntr, setLikeEvntCntr] = useState(0);
-    console.log(props);
-
+    const [postOwner, setPostOwner] = useState("Fetching username...")
+    
     const handleLike = async (event) => {
-        // event.preventDefault()
-        console.log("Like Event ", likeEvntCntr);
+        
         try {
             const response = await axios.put(
                 "http://localhost:5000/post/like",
                 { postid: post.ids }
             );
-            console.log(response);
+           
             if (likeEvntCntr === 1) {
                 document
                     .getElementById("like_btn")
@@ -29,10 +29,28 @@ export const Post = (props) => {
                 setLikeEvntCntr(1);
             }
         } catch (err) {
-            console.log(err);
+            // alert(err);
         }
     };
-    // https://source.unsplash.com/1600x900/?girl
+
+
+    useEffect(() => {
+            const get_owner = async () => {
+                const post_friends = JSON.parse(
+                    localStorage.getItem("post_friends")
+                );
+                
+                console.table(post_friends);
+                for (const obj of post_friends) {
+                    if (props.props.owner === obj._id) {
+                        setPostOwner(obj.name);
+                    }
+                }
+            };
+            get_owner();
+    }, [])
+
+    
     return (
         <>
             <div className="post">
@@ -43,7 +61,7 @@ export const Post = (props) => {
                         className="post-owner-image"
                     ></img>
                     <div className="post-owner-name">
-                        <div>{props.props.owner}</div>
+                        <div>{postOwner}</div>
                         <div className="post-title">{props.props.title}</div>
                     </div>
                 </div>
@@ -57,36 +75,7 @@ export const Post = (props) => {
                 {/* <div className="post-title">This is Title</div> */}
                 <div className="post-desc">
                     <div className="post-like-icon">
-                        {/* <FontAwesomeIcon icon="fa-solid fa-heart" /> */}
-
-                        {/* <img
-                      src="like.png"
-                      alt="like pink"
-                      style={{ width: "50px", height: "48px" }}
-                    /> */}
-                        {/* {likevisible ? (
-                          <img
-                              src="like.png"
-                              className="post-like"
-                              onClick={handleLike()}
-                          />
-                      ) : (
-                          <img
-                              src="like_bank.png"
-                              className="post-like"
-                              onClick={handleLike()}
-                          />
-                      )} */}
-                        <span
-                            id="like_btn"
-                            onClick={(e) => handleLike(e)}
-                            alt="Like"
-                            className="material-symbols-outlined post-like"
-                            style={{ fontSize: "2rem" }}
-                        >
-                            favorite
-                        </span>
-
+                     <Like props={props}/>
                         {/* <div className="post-info">100 Likes</div> */}
                         <div className="post-desc-info">
                             {props.props?.post_desc}
